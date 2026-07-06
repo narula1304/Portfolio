@@ -1,0 +1,44 @@
+---
+title: "CampusOps"
+summary: "Real-time smart campus operations platform — incident reporting, emergency alerts, and role-based dashboards."
+status: "shipped"
+featured: true
+techStack:
+  - "Node.js"
+  - "Express"
+  - "Socket.IO"
+  - "Redis"
+  - "BullMQ"
+  - "PostgreSQL"
+cover:
+  gradientFrom: "oklch(0.62 0.19 260)"
+  gradientTo: "oklch(0.62 0.22 300)"
+links: {}
+  # TODO: add github/demo URLs once the repo is public, e.g.
+  # github: "https://github.com/your-username/campusops"
+  # demo: "https://campusops.vercel.app"
+sections:
+  - kind: "problem"
+    content: "Campuses typically have no fast, structured way to report incidents or push emergency alerts — reports go through slow, informal channels (word of mouth, generic email), and there's no role-based visibility into what's actually happening across departments in real time."
+  - kind: "architecture"
+    content: "A Node.js/Express API backs role-based dashboards (student, staff, security, admin). Socket.IO pushes incident and alert events to connected clients instantly, while Redis Pub/Sub fans those events out across multiple server instances so real-time delivery stays consistent as the system scales horizontally."
+  - kind: "techStack"
+    items:
+      - "Node.js + Express (API)"
+      - "Socket.IO (real-time push)"
+      - "Redis Pub/Sub (cross-instance event fan-out)"
+      - "BullMQ (background jobs — notifications, analytics aggregation)"
+      - "PostgreSQL (incidents, users, roles)"
+  - kind: "databaseDesign"
+    content: "Incidents, users, and roles are modeled relationally in PostgreSQL — an incident belongs to a reporter and an assigned handler, with a status enum (reported, acknowledged, resolved) and a role-scoped visibility rule enforced at the query layer rather than in application logic, so a new dashboard view can't accidentally leak data across roles."
+  - kind: "apiDesign"
+    content: "REST endpoints handle CRUD for incidents and alerts; Socket.IO handles everything that needs to be pushed rather than polled. Emergency alerts are a distinct event type from incident updates so clients can prioritize rendering and notification urgency differently."
+  - kind: "scalability"
+    content: "Redis Pub/Sub was the key decision here — without it, Socket.IO's in-memory event broadcasting only works within a single server process. Pub/Sub lets incident and alert events reach every connected client regardless of which server instance they're attached to, which is what makes horizontal scaling possible at all."
+  - kind: "challenges"
+    content: "Getting background jobs (notification delivery, analytics aggregation) to not block the real-time event path was the main challenge — BullMQ's queue-based approach let slow, non-urgent work run asynchronously without adding latency to the incident-reporting flow that actually needs to feel instant."
+  - kind: "lessonsLearned"
+    content: "Real-time systems fail in ways that are hard to reproduce locally — a single-instance dev setup hides the exact class of bugs (event ordering, duplicate delivery across instances) that Redis Pub/Sub exists to solve. Testing with multiple server instances locally early on would have caught issues sooner."
+  - kind: "futureImprovements"
+    content: "Planned: a public status page for campus-wide alerts, SLA-based auto-escalation for unacknowledged incidents, and moving analytics aggregation from scheduled BullMQ jobs to a proper time-series store."
+---

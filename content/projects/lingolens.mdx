@@ -1,0 +1,36 @@
+---
+title: "LingoLens"
+summary: "AI sign language platform — sign-to-text, text-to-sign, and text-to-speech built on EfficientNet and OpenCV."
+status: "shipped"
+featured: true
+techStack:
+  - "Python"
+  - "TensorFlow"
+  - "EfficientNet"
+  - "OpenCV"
+  - "React"
+cover:
+  gradientFrom: "oklch(0.62 0.22 300)"
+  gradientTo: "oklch(0.62 0.19 260)"
+links: {}
+  # TODO: add github/demo URLs once the repo is public
+sections:
+  - kind: "problem"
+    content: "Real-time communication between sign language users and non-signers usually depends on a human interpreter being physically present. There's no accessible, low-friction tool that translates sign language to text (and back) in real time from a regular webcam."
+  - kind: "architecture"
+    content: "A webcam feed is processed frame-by-frame with OpenCV for hand/pose detection, then classified by an EfficientNet model fine-tuned on a sign language gesture dataset. Recognized signs are assembled into text, which a separate text-to-speech pipeline can voice aloud — and the reverse direction (text-to-sign) maps input text back to a sequence of sign representations."
+  - kind: "techStack"
+    items:
+      - "Python (inference pipeline)"
+      - "TensorFlow + EfficientNet (gesture classification)"
+      - "OpenCV (frame preprocessing, hand/pose detection)"
+      - "React (capture UI, live results)"
+  - kind: "apiDesign"
+    content: "The inference pipeline is exposed behind a simple endpoint that accepts a video frame and returns a classified gesture with a confidence score, keeping the model itself decoupled from the capture UI so the frontend only ever deals with a small JSON contract."
+  - kind: "challenges"
+    content: "Gesture classification accuracy dropped sharply with inconsistent lighting and camera angles compared to the training dataset. Preprocessing frames through OpenCV — normalizing contrast and isolating the hand region before classification — closed most of that gap without needing to retrain the model on a much larger dataset."
+  - kind: "lessonsLearned"
+    content: "EfficientNet's accuracy/speed tradeoff needed real tuning for this use case specifically — the smallest variant was fast enough for near real-time inference but noticeably less accurate on ambiguous gestures, which mattered more here than in typical image classification tasks where a wrong top-1 guess is less costly."
+  - kind: "futureImprovements"
+    content: "Planned: expanding the gesture vocabulary beyond the current dataset, adding continuous-sign (not just isolated-gesture) recognition, and moving inference client-side via TensorFlow.js so the tool works without a round trip to a server."
+---
