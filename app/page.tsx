@@ -1,11 +1,14 @@
 import { Hero } from "@/components/organisms/Hero";
 import { About } from "@/components/organisms/About";
 import { ProjectsGrid, ProjectsSectionHeading } from "@/components/organisms/ProjectsGrid";
+import { SkillsMatrix } from "@/components/organisms/SkillsMatrix";
+import { ExperienceTimeline } from "@/components/organisms/ExperienceTimeline";
+import { AchievementsGrid } from "@/components/organisms/AchievementsGrid";
+import { CodingProfiles } from "@/components/organisms/CodingProfiles";
 import { getAllProjects } from "@/lib/mdx";
 
 /**
- * Landing page. Sections beyond Projects (Skills, Timeline, Achievements,
- * Coding Profiles, Contact) land in build steps 6-7.
+ * Landing page. Contact section lands in build step 7.
  */
 export default function Home() {
   const projects = getAllProjects();
@@ -18,6 +21,10 @@ export default function Home() {
         <ProjectsSectionHeading />
         <ProjectsGrid projects={projects} variant="preview" />
       </section>
+      <SkillsMatrix />
+      <ExperienceTimeline />
+      <AchievementsGrid />
+      <CodingProfiles />
     </>
   );
 }

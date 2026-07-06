@@ -66,7 +66,7 @@ export function Navbar() {
               key={item.href}
               href={item.href}
               label={item.label}
-              isActive={item.href === `#${activeId}`}
+              isActive={item.href === `/#${activeId}` || item.href === `#${activeId}`}
             />
           ))}
         </div>
@@ -116,7 +116,7 @@ export function Navbar() {
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={cn(
                     "rounded-md px-3 py-3 text-base font-medium",
-                    item.href === `#${activeId}`
+                    item.href === `/#${activeId}` || item.href === `#${activeId}`
                       ? "bg-card text-foreground"
                       : "text-muted-foreground hover:bg-card hover:text-foreground"
                   )}

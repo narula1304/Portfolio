@@ -10,13 +10,13 @@ export type NavItem = {
 };
 
 export const navItems: NavItem[] = [
-  { label: "About", href: "#about" },
-  { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "Timeline", href: "#timeline" },
-  { label: "Achievements", href: "#achievements" },
+  { label: "About", href: "/#about" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Skills", href: "/#skills" },
+  { label: "Timeline", href: "/#timeline" },
+  { label: "Achievements", href: "/#achievements" },
   { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "#contact" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 // Section IDs used by useScrollSpy — kept separate from navItems so
