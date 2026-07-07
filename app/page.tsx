@@ -5,10 +5,13 @@ import { SkillsMatrix } from "@/components/organisms/SkillsMatrix";
 import { ExperienceTimeline } from "@/components/organisms/ExperienceTimeline";
 import { AchievementsGrid } from "@/components/organisms/AchievementsGrid";
 import { CodingProfiles } from "@/components/organisms/CodingProfiles";
+import { ContactForm } from "@/components/organisms/ContactForm";
 import { getAllProjects } from "@/lib/mdx";
 
 /**
- * Landing page. Contact section lands in build step 7.
+ * Landing page — all sections through build step 7 are now wired.
+ * Remaining build steps: Command Palette (8), SEO (9), polish/a11y/
+ * Lighthouse pass (10).
  */
 export default function Home() {
   const projects = getAllProjects();
@@ -25,6 +28,7 @@ export default function Home() {
       <ExperienceTimeline />
       <AchievementsGrid />
       <CodingProfiles />
+      <ContactForm />
     </>
   );
 }
