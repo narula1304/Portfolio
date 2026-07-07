@@ -4,6 +4,7 @@ import { Footer } from "@/components/organisms/Footer";
 import { ScrollProgress } from "@/components/chrome/ScrollProgress";
 import { BackToTop } from "@/components/chrome/BackToTop";
 import { LoadingScreen } from "@/components/chrome/LoadingScreen";
+import { CommandPaletteLoader } from "@/components/chrome/CommandPaletteLoader";
 
 /**
  * Composes Navbar + ScrollProgress + Footer + global chrome widgets
@@ -16,6 +17,7 @@ export function PageShell({ children }: { children: ReactNode }) {
     <>
       <LoadingScreen />
       <ScrollProgress />
+      <CommandPaletteLoader />
       <Navbar />
       <main id="main-content">{children}</main>
       <Footer />

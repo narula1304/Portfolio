@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, Search, X } from "lucide-react";
 import { Button } from "@/components/atoms/Button";
+import { Kbd } from "@/components/atoms/Kbd";
 import { NavLink } from "@/components/molecules/NavLink";
 import { ThemeToggle } from "@/components/molecules/ThemeToggle";
+import { useCommandPalette } from "@/components/providers/CommandPaletteProvider";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 import { navItems, scrollSpySectionIds } from "@/config/nav";
 import { siteConfig } from "@/config/site";
@@ -16,6 +18,7 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const activeId = useScrollSpy(scrollSpySectionIds);
+  const { setIsOpen: setCommandPaletteOpen } = useCommandPalette();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 8);
@@ -66,12 +69,21 @@ export function Navbar() {
               key={item.href}
               href={item.href}
               label={item.label}
-              isActive={item.href === `/#${activeId}` || item.href === `#${activeId}`}
+              isActive={item.href === `#${activeId}`}
             />
           ))}
         </div>
 
         <div className="hidden items-center gap-3 md:flex">
+          <button
+            onClick={() => setCommandPaletteOpen(true)}
+            aria-label="Open command palette"
+            className="flex items-center gap-2 rounded-md border border-border bg-card px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+          >
+            <Search className="h-3.5 w-3.5" />
+            <span>Search</span>
+            <Kbd>⌘K</Kbd>
+          </button>
           <ThemeToggle />
           <Button asChild size="sm">
             <a href={siteConfig.links.resume} download>
@@ -82,6 +94,14 @@ export function Navbar() {
 
         {/* Mobile trigger */}
         <div className="flex items-center gap-2 md:hidden">
+          <Button
+            variant="icon"
+            size="icon"
+            aria-label="Open command palette"
+            onClick={() => setCommandPaletteOpen(true)}
+          >
+            <Search className="h-4 w-4" />
+          </Button>
           <ThemeToggle />
           <Button
             variant="icon"
@@ -116,7 +136,7 @@ export function Navbar() {
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={cn(
                     "rounded-md px-3 py-3 text-base font-medium",
-                    item.href === `/#${activeId}` || item.href === `#${activeId}`
+                    item.href === `#${activeId}`
                       ? "bg-card text-foreground"
                       : "text-muted-foreground hover:bg-card hover:text-foreground"
                   )}
