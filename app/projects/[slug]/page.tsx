@@ -2,19 +2,15 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CaseStudyLayout } from "@/components/layouts/CaseStudyLayout";
 import { getAllProjectSlugs, getProjectBySlug } from "@/lib/mdx";
+import { getProjectJsonLd } from "@/lib/seo";
+import { siteConfig } from "@/config/site";
 
 type PageParams = { slug: string };
 
-// [Architecture §3 / §8] Required for SSG — every case study is pre-rendered
-// at build time rather than falling back to on-demand SSR.
 export function generateStaticParams() {
     return getAllProjectSlugs().map((slug) => ({ slug }));
 }
 
-// [Architecture §8 fix] Required on every dynamic route — without this,
-// every case study would share the same generic title/description when
-// shared on social platforms.
-// Next.js 15: params is a Promise on both generateMetadata and the page.
 export async function generateMetadata({
     params,
 }: {
@@ -27,6 +23,9 @@ export async function generateMetadata({
     return {
         title: project.title,
         description: project.summary,
+        alternates: {
+            canonical: `${siteConfig.url}/projects/${slug}`,
+        },
         openGraph: {
             title: project.title,
             description: project.summary,
@@ -43,5 +42,16 @@ export default async function ProjectCaseStudyPage({
     const project = getProjectBySlug(slug);
     if (!project) notFound();
 
-    return <CaseStudyLayout project={project} />;
+    const jsonLd = getProjectJsonLd(project);
+
+    return (
+        <>
+            {/* [Architecture §8] SoftwareSourceCode schema for this case study */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            <CaseStudyLayout project={project} />
+        </>
+    );
 }

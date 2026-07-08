@@ -4,6 +4,7 @@ import { AppProviders } from "@/components/providers/AppProviders";
 import { SkipToContent } from "@/components/atoms/SkipToContent";
 import { PageShell } from "@/components/layouts/PageShell";
 import { siteConfig } from "@/config/site";
+import { getPersonJsonLd } from "@/lib/seo";
 import "./globals.css";
 
 /**
@@ -41,6 +42,9 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  alternates: {
+    canonical: siteConfig.url,
+  },
   openGraph: {
     title: siteConfig.title,
     description: siteConfig.description,
@@ -62,11 +66,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const personJsonLd = getPersonJsonLd();
+
   return (
-    <html lang="en" className="scroll-smooth dark" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body
         className={`${inter.variable} ${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
       >
+        {/* [Architecture §8] Person schema — homepage structured data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
         <AppProviders>
           <SkipToContent />
           <PageShell>{children}</PageShell>

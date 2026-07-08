@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import { EmptyState } from "@/components/atoms/EmptyState";
+import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
     title: "Blog",
-    description: "Writing on Socket.IO, Redis, AI, system design, Node.js, and React.",
+    description:
+        "Writing on Socket.IO, Redis, AI, system design, Node.js, and React.",
+    alternates: {
+        canonical: `${siteConfig.url}/blog`,
+    },
 };
 
 /**
